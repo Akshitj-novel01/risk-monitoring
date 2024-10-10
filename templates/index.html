@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Assessment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: inline-block;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        input[type="file"],
+        input[type="number"],
+        input[type="submit"] {
+            padding: 8px;
+            margin: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .table-container {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        table.data {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            background-color: #fff;
+        }
+
+        table.data th, table.data td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        table.data th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        table.data tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table.data tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .stats-section {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .stats-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .stats-section li {
+            background: #eee;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Risk Assessment</h1>
+    <div class="container">
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <label for="file">Select CSV file (optional):</label><br>
+            <input type="file" name="file" accept=".csv"><br><br>
+            <label for="num_rows">Number of rows to display (default 5):</label><br>
+            <input type="number" name="num_rows" min="1" value="5"><br><br>
+            <input type="submit" value="Upload and Process">
+        </form>
+
+        {% if tables %}
+        <h2>Processed Table</h2>
+        <div class="table-container">
+            {{ tables|safe }}
+        </div>
+        {% else %}
+        <p>No table to display.</p>
+        {% endif %}
+
+        {% if stats %}
+        <div class="stats-section">
+            <h2>Statistical Analysis</h2>
+            <ul>
+                <li><strong>Total Number of Risks:</strong> {{ stats['Total Number of Risks'] }}</li>
+                <li><strong>Range of Mean Risks (Min, Max):</strong> {{ stats['Range'] }}</li>
+                <li><strong>Top 5 Max Risks:</strong> {{ stats['Max Risks (Top 5)'] }}</li>
+                <li><strong>Top 5 Min Risks:</strong> {{ stats['Min Risks (Top 5)'] }}</li>
+                <li><strong>Standard Deviation:</strong> {{ stats['Standard Deviation of Mean Risk'] }}</li>
+            </ul>
+        </div>
+        {% else %}
+        <p>No statistics available.</p>
+        {% endif %}
+
+        {% if download_link %}
+        <a href="{{ download_link }}" class="btn btn-primary" download>Download Processed Table</a>
+        {% endif %}
+
+    </div>
+</body>
+</html>
